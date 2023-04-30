@@ -90,11 +90,11 @@ class Images(db.Model):
     __tablename__ = 'images'
 
     _name = db.Column(db.String(255), primary_key=True, unique=True, nullable=False)
-    _data = db.Column(db.BLOB, nullable=False)
+    _data = db.Column(db.String, nullable=False)
 
-    def __init__(self, name, tokens=0):
+    def __init__(self, name, data):
         self._name = name
-        self._data = tokens
+        self._data = data
 
     @property
     def name(self):
@@ -117,9 +117,9 @@ class Images(db.Model):
             db.session.add(self) 
             db.session.commit()
             return self
-        except IntegrityError:
+        except Exception as e:
             db.session.remove()
-            return None
+            return str(e)
 
     def read(self):
         return {
