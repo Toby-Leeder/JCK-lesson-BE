@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Text
 from .. import app, db
 from sqlalchemy.exc import IntegrityError
 import json
+from ..model.images import images
 
 # place your model code here
 # you can use the code we showed in our lesson as an example
@@ -85,6 +86,70 @@ def initPlayers():
         except:
             print("database user creation error")
 
+class Images(db.Model):
+    __tablename__ = 'images'
 
+    _name = db.Column(db.String(255), primary_key=True, unique=True, nullable=False)
+    _data = db.Column(db.BLOB, nullable=False)
+
+    def __init__(self, name, tokens=0):
+        self._name = name
+        self._data = tokens
+
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, name):
+        self._name = name
+    
+    @property
+    def data(self):
+        return self._data
+    
+    @data.setter
+    def data(self, data):
+        self._data = data
+
+    def create(self):
+        try:
+            db.session.add(self) 
+            db.session.commit()
+            return self
+        except IntegrityError:
+            db.session.remove()
+            return None
+
+    def read(self):
+        return {
+            "name": self.name,
+            "data": self.data,
+        }
+
+    def update(self, name="", data=""):
+        if len(name) > 0:
+            self.name = name
+        if len(data) > 0:
+            self.data = data
+        db.session.commit()
+        return self
+
+    def delete(self):
+        image = self
+        db.session.delete(self)
+        db.session.commit()
+        return image
+
+def initImages():
+    with app.app_context():
+        try:
+            image1 = Images(name="image", data=images[0])
+            image1.create()
+        except:
+            print("database creation error")
+
+def getImage(name):
+    return Images.query.filter_by(_name=name).first()
 # make sure you put initial data here as well
 # EXTRA CREDIT: make the placing of data more efficient than our method shown in the lesson

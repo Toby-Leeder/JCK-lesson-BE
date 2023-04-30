@@ -4,10 +4,12 @@
 from hacks_api import app, db
 
 from hacks_api.api.api import player_bp # bp for table
-from hacks_api.model.model import initPlayers # initializing function
+from hacks_api.model.model import initPlayers, initImages # initializing function
+from hacks_api.api.imageapi import image_bp # bp for image
+
 
 app.register_blueprint(player_bp)
-
+app.register_blueprint(image_bp)
 
 
 @app.before_first_request
@@ -15,6 +17,7 @@ def init_db():
     with app.app_context():
         db.create_all()
         initPlayers()
+        initImages()
         # put your initializing function here
 
 
