@@ -80,7 +80,13 @@ def initPlayers():
         try:
             u1 = Player(name="dash", tokens=123)
             u2 = Player(name="toby", tokens=0)
-            players = [u1, u2]
+            u3 = Player(name="azeem", tokens=77)
+            u4 = Player(name="aiden", tokens=69)
+            u5 = Player(name="ekam", tokens=120)
+            u6 = Player(name="ishi", tokens=111)
+            u7 = Player(name="colin", tokens=99)
+            u8 = Player(name="nathan", tokens=43)
+            players = [u1, u2, u3, u4, u5, u6, u7, u8]
             for player in players:
                 player.create()
         except:
@@ -144,7 +150,7 @@ class Images(db.Model):
 def initImages():
     with app.app_context():
         try:
-            image1 = Images(name="image", data=images[0])
+            image1 = Images(name="Logo", data=images[0])
             image1.create()
         except:
             print("database creation error")
